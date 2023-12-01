@@ -1,1 +1,0 @@
-/Users/hotinnn/Workspace/Advent\ of\ Code\ 2023/playground/target/debug/playground: /Users/hotinnn/Workspace/Advent\ of\ Code\ 2023/playground/input.txt /Users/hotinnn/Workspace/Advent\ of\ Code\ 2023/playground/src/main.rs
