@@ -11,7 +11,7 @@ const LITERALS: [&str; 9] = [
     "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 ];
 //BAD METHOD, but works for my input
-const DIGITS: [&str; 9] = ["o1e", "t2", "t3e", "f4r", "f5e", "s6x", "s7n", "e8t", "n9e"];
+const DIGITS: [&str; 9] = ["o1e", "t2o", "t3e", "f4r", "f5e", "s6x", "s7n", "e8t", "n9e"];
 
 
 fn placeStringToDigit(mut input: &str) -> String{
