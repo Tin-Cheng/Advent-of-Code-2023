@@ -14,7 +14,7 @@ const DIGITS: [&str; 9] = [
     "o1e", "t2o", "t3e", "f4r", "f5e", "s6x", "s7n", "e8t", "n9e",
 ];
 
-fn placeStringToDigit(mut input: &str) -> String {
+fn place_string_to_digit(input: &str) -> String {
     let mut output = String::from(input);
     let map = zip(LITERALS.iter(), DIGITS.iter());
     for (from, to) in map {
@@ -28,7 +28,7 @@ fn part2(input: &str) -> String {
     let numbers: Vec<u32> = input
         .lines()
         .map(|line: &str| {
-            let replaced = placeStringToDigit(line);
+            let replaced = place_string_to_digit(line);
             let num_str: Vec<char> = replaced.chars().filter(|c| c.is_digit(10)).collect();
             let mut line_num = String::from("");
             match num_str.first() {
@@ -53,14 +53,14 @@ mod tests {
     use super::*;
     #[test]
     fn it_works() {
-        let testcase = "two1nine
+        let test_case = "two1nine
         eightwothree
         abcone2threexyz
         xtwone3four
         4nineeightseven2
         zoneight234
         7pqrstsixteen";
-        let result = part2(testcase);
+        let result = part2(test_case);
         assert_eq!(result, "281".to_string());
     }
 }
