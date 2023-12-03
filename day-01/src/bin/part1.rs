@@ -9,11 +9,8 @@ fn part1(input: &str) -> String {
     let numbers: Vec<u32> = input
         .lines()
         .map(|line: &str| {
-            let num_str: Vec<char> = line
-                .chars()
-                .filter(|c| c.is_digit(10))
-                .collect();
-            let mut line_num =String::from("");
+            let num_str: Vec<char> = line.chars().filter(|c| c.is_digit(10)).collect();
+            let mut line_num = String::from("");
             match num_str.first() {
                 Some(v) => line_num.push(*v),
                 None => println!("The stack is empty"),
@@ -25,9 +22,9 @@ fn part1(input: &str) -> String {
             line_num.parse().unwrap()
         })
         .collect();
-        
-        //.collect();
-    let result:u32 = numbers.into_iter().sum();
+
+    //.collect();
+    let result: u32 = numbers.into_iter().sum();
     result.to_string()
 }
 
