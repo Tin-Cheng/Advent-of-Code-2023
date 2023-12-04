@@ -29,7 +29,7 @@ fn part2(input: &str) -> String {
         .lines()
         .map(|line: &str| {
             let replaced = place_string_to_digit(line);
-            let num_str: Vec<char> = replaced.chars().filter(|c| c.is_digit(10)).collect();
+            let num_str: Vec<char> = replaced.chars().filter(|c| c.is_ascii_digit()).collect();
             let mut line_num = String::from("");
             match num_str.first() {
                 Some(v) => line_num.push(*v),

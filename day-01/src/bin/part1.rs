@@ -9,7 +9,7 @@ fn part1(input: &str) -> String {
     let numbers: Vec<u32> = input
         .lines()
         .map(|line: &str| {
-            let num_str: Vec<char> = line.chars().filter(|c| c.is_digit(10)).collect();
+            let num_str: Vec<char> = line.chars().filter(|c| c.is_ascii_digit()).collect();
             let mut line_num = String::from("");
             match num_str.first() {
                 Some(v) => line_num.push(*v),

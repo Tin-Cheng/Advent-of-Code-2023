@@ -6,36 +6,36 @@ fn main() {
     let output = part2(input);
     dbg!(output);
 }
-const RED: u32 = 12;
-const GREEN: u32 = 13;
-const BLUE: u32 = 14;
+//const RED: u32 = 12;
+//const GREEN: u32 = 13;
+//const BLUE: u32 = 14;
 
 fn calculate_sets(input: &str) -> u32 {
-    let sets: &str = &input.replace(";", ",");
+    let sets: &str = &input.replace(';', ",");
     let set_split: Vec<&str> = sets.split(',').collect();
-    let mut min_RED: u32 = 0;
-    let mut min_GREEN: u32 = 0;
-    let mut min_BLUE: u32 = 0;
+    let mut min_red: u32 = 0;
+    let mut min_green: u32 = 0;
+    let mut min_blue: u32 = 0;
     for set in set_split {
         let color_split: Vec<&str> = set.trim().split(' ').collect();
         let num: u32 = color_split[0].parse().unwrap();
 
         match color_split[1] {
             "red" => {
-                min_RED = cmp::max(num, min_RED);
+                min_red = cmp::max(num, min_red);
             }
             "green" => {
-                min_GREEN = cmp::max(num, min_GREEN);
+                min_green = cmp::max(num, min_green);
             }
             "blue" => {
-                min_BLUE = cmp::max(num, min_BLUE);
+                min_blue = cmp::max(num, min_blue);
             }
             _ => {
                 panic!("unknown color!");
             }
         }
     }
-    min_RED * min_GREEN * min_BLUE
+    min_red * min_green * min_blue
 }
 
 fn part2(input: &str) -> String {
@@ -45,9 +45,9 @@ fn part2(input: &str) -> String {
             let line_str = line.to_string();
             let split: Vec<&str> = line_str.split(':').collect();
 
-            let game_index_split: Vec<&str> = split[0].split(' ').collect();
-            let mut game_num: u32 = game_index_split[1].parse().unwrap();
-            let mut total: u32 = 0;
+            //let game_index_split: Vec<&str> = split[0].split(' ').collect();
+            //let mut game_num: u32 = game_index_split[1].parse().unwrap();
+            //let mut total: u32 = 0;
 
             calculate_sets(split[1])
         })

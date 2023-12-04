@@ -16,7 +16,8 @@ fn part1(input: &str) -> u32 {
     let data: Vec<Vec<char>> = input.lines().map(|s| s.chars().collect()).collect();
 
     fn is_near_symbol(
-        data: &Vec<Vec<char>>,
+        //data: &Vec<Vec<char>>,
+        data: &[Vec<char>],
         rows: usize,
         cols: usize,
         row: usize,
@@ -24,28 +25,28 @@ fn part1(input: &str) -> u32 {
         length: usize,
     ) -> bool {
         let min_col = if col > 0 { col - 1 } else { 0 };
-        let max_col = if col + length + 1 <= cols {
+        let max_col = if col + length < cols {
             col + length + 1
         } else {
             cols
         };
 
-        if !data[row][min_col].is_digit(10) && data[row][min_col] != '.' {
+        if !data[row][min_col].is_ascii_digit() && data[row][min_col] != '.' {
             return true;
         }
-        if !data[row][max_col - 1].is_digit(10) && data[row][max_col - 1] != '.' {
+        if !data[row][max_col - 1].is_ascii_digit() && data[row][max_col - 1] != '.' {
             return true;
         }
         if row > 0 {
             for c in min_col..max_col {
-                if !data[row - 1][c].is_digit(10) && data[row - 1][c] != '.' {
+                if !data[row - 1][c].is_ascii_digit() && data[row - 1][c] != '.' {
                     return true;
                 }
             }
         }
         if row + 1 < rows {
             for c in min_col..max_col {
-                if !data[row + 1][c].is_digit(10) && data[row + 1][c] != '.' {
+                if !data[row + 1][c].is_ascii_digit() && data[row + 1][c] != '.' {
                     return true;
                 }
             }
@@ -58,15 +59,15 @@ fn part1(input: &str) -> u32 {
     while row < rows {
         let mut col = 0;
         while col < cols {
-            if data[row][col].is_digit(10) {
+            if data[row][col].is_ascii_digit() {
                 let mut length = 0;
                 let mut num: String = String::from("");
-                while col + length < cols && data[row][col + length].is_digit(10) {
+                while col + length < cols && data[row][col + length].is_ascii_digit() {
                     num = num + &String::from(data[row][col + length]);
                     length += 1;
                 }
                 if is_near_symbol(&data, rows, cols, row, col, length) {
-                    result = result + num.parse::<u32>().unwrap();
+                    result += num.parse::<u32>().unwrap();
                 }
                 col += length;
                 println!("num {}, result {}", num, result);

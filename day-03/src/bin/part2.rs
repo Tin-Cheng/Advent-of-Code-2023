@@ -20,7 +20,7 @@ fn part2(input: &str) -> u32 {
     let mut hash_map: HashMap<String, Vec<u32>> = HashMap::new();
 
     fn is_near_symbol(
-        data: &Vec<Vec<char>>,
+        data: &[Vec<char>],
         rows: usize,
         cols: usize,
         row: usize,
@@ -28,28 +28,28 @@ fn part2(input: &str) -> u32 {
         length: usize,
     ) -> bool {
         let min_col = if col > 0 { col - 1 } else { 0 };
-        let max_col = if col + length + 1 <= cols {
+        let max_col = if col + length < cols {
             col + length + 1
         } else {
             cols
         };
 
-        if !data[row][min_col].is_digit(10) && data[row][min_col] != '.' {
+        if !data[row][min_col].is_ascii_digit() && data[row][min_col] != '.' {
             return true;
         }
-        if !data[row][max_col - 1].is_digit(10) && data[row][max_col - 1] != '.' {
+        if !data[row][max_col - 1].is_ascii_digit() && data[row][max_col - 1] != '.' {
             return true;
         }
         if row > 0 {
             for c in min_col..max_col {
-                if !data[row - 1][c].is_digit(10) && data[row - 1][c] != '.' {
+                if !data[row - 1][c].is_ascii_digit() && data[row - 1][c] != '.' {
                     return true;
                 }
             }
         }
         if row + 1 < rows {
             for c in min_col..max_col {
-                if !data[row + 1][c].is_digit(10) && data[row + 1][c] != '.' {
+                if !data[row + 1][c].is_ascii_digit() && data[row + 1][c] != '.' {
                     return true;
                 }
             }
@@ -58,7 +58,7 @@ fn part2(input: &str) -> u32 {
     }
 
     fn check_nearby_gears(
-        data: &Vec<Vec<char>>,
+        data: &[Vec<char>],
         rows: usize,
         cols: usize,
         row: usize,
@@ -67,7 +67,7 @@ fn part2(input: &str) -> u32 {
     ) -> Vec<String> {
         let mut result = Vec::new();
         let min_col = if col > 0 { col - 1 } else { 0 };
-        let max_col = if col + length + 1 <= cols {
+        let max_col = if col + length < cols {
             col + length + 1
         } else {
             cols
@@ -101,21 +101,21 @@ fn part2(input: &str) -> u32 {
     while row < rows {
         let mut col = 0;
         while col < cols {
-            if data[row][col].is_digit(10) {
+            if data[row][col].is_ascii_digit() {
                 let mut length = 0;
                 let mut num: String = String::from("");
-                while col + length < cols && data[row][col + length].is_digit(10) {
+                while col + length < cols && data[row][col + length].is_ascii_digit() {
                     num = num + &String::from(data[row][col + length]);
                     length += 1;
                 }
-                if is_near_symbol(&data, rows, cols, row, col, length) {
+                /*if is_near_symbol(&data, rows, cols, row, col, length) {
                     result = result + num.parse::<u32>().unwrap();
-                }
+                }*/
                 let nearby_gears = check_nearby_gears(&data, rows, cols, row, col, length);
                 for gear in &nearby_gears {
                     hash_map
                         .entry(gear.to_string())
-                        .or_insert(Vec::new())
+                        .or_default()
                         .push(num.parse::<u32>().unwrap());
                 }
                 col += length;
@@ -125,7 +125,7 @@ fn part2(input: &str) -> u32 {
         row += 1;
     }
 
-    for (key, value) in &hash_map {
+    for value in hash_map.values() {
         if value.len() == 2 {
             result += value[0] * value[1];
         }
