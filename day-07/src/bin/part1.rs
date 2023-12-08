@@ -23,131 +23,130 @@ fn part1(input: &str) -> i64 {
     let mut one_pair: Vec<Vec<&str>> = Vec::new();
     let mut high_card: Vec<Vec<&str>> = Vec::new();
 
-    for hand in hands{
+    for hand in hands {
         let cards = hand[0];
-        let mut counts: HashMap<char,i8> = HashMap::new();
+        let mut counts: HashMap<char, i8> = HashMap::new();
         for card in cards.chars() {
             *counts.entry(card).or_insert(0) += 1;
         }
-        
-        let mut counts_vec: Vec<_> = counts.iter().collect::<Vec<_>>();//.sort();
+
+        let mut counts_vec: Vec<_> = counts.iter().collect::<Vec<_>>(); //.sort();
         counts_vec.sort_by_key(|x| -1 * x.1);
-        if *counts_vec[0].1 == 5 as i8 {
+        if *counts_vec[0].1 == 5_i8 {
             five_of_a_kind.push(hand);
-        }else if *counts_vec[0].1 == 4 as i8{
+        } else if *counts_vec[0].1 == 4_i8 {
             four_of_a_kind.push(hand);
-        }else if *counts_vec[0].1 == 3 as i8 && *counts_vec[1].1 == 2 as i8 {
+        } else if *counts_vec[0].1 == 3_i8 && *counts_vec[1].1 == 2_i8 {
             full_house.push(hand);
-        }else if *counts_vec[0].1 == 3 as i8 {
+        } else if *counts_vec[0].1 == 3_i8 {
             three_of_a_kind.push(hand);
-        }else if *counts_vec[0].1 == 2 as i8 && *counts_vec[1].1 == 2 as i8 {
+        } else if *counts_vec[0].1 == 2_i8 && *counts_vec[1].1 == 2_i8 {
             two_pair.push(hand);
-        }else if *counts_vec[0].1 == 2 as i8 {
+        } else if *counts_vec[0].1 == 2_i8 {
             one_pair.push(hand);
-        }else{
+        } else {
             high_card.push(hand);
         }
     }
 
-    five_of_a_kind.sort_by_key(|x| 
+    five_of_a_kind.sort_by_key(|x| {
         (
-            sort_order.find(x[0].chars().nth(0).unwrap()),
+            sort_order.find(x[0].chars().next().unwrap()),
             sort_order.find(x[0].chars().nth(1).unwrap()),
             sort_order.find(x[0].chars().nth(2).unwrap()),
             sort_order.find(x[0].chars().nth(3).unwrap()),
-            sort_order.find(x[0].chars().nth(4).unwrap())
+            sort_order.find(x[0].chars().nth(4).unwrap()),
         )
-    );
-    four_of_a_kind.sort_by_key(|x| 
+    });
+    four_of_a_kind.sort_by_key(|x| {
         (
-            sort_order.find(x[0].chars().nth(0).unwrap()),
+            sort_order.find(x[0].chars().next().unwrap()),
             sort_order.find(x[0].chars().nth(1).unwrap()),
             sort_order.find(x[0].chars().nth(2).unwrap()),
             sort_order.find(x[0].chars().nth(3).unwrap()),
-            sort_order.find(x[0].chars().nth(4).unwrap())
+            sort_order.find(x[0].chars().nth(4).unwrap()),
         )
-    );
-    full_house.sort_by_key(|x| 
+    });
+    full_house.sort_by_key(|x| {
         (
-            sort_order.find(x[0].chars().nth(0).unwrap()),
+            sort_order.find(x[0].chars().next().unwrap()),
             sort_order.find(x[0].chars().nth(1).unwrap()),
             sort_order.find(x[0].chars().nth(2).unwrap()),
             sort_order.find(x[0].chars().nth(3).unwrap()),
-            sort_order.find(x[0].chars().nth(4).unwrap())
+            sort_order.find(x[0].chars().nth(4).unwrap()),
         )
-    );
+    });
 
-    three_of_a_kind.sort_by_key(|x| 
+    three_of_a_kind.sort_by_key(|x| {
         (
-            sort_order.find(x[0].chars().nth(0).unwrap()),
+            sort_order.find(x[0].chars().next().unwrap()),
             sort_order.find(x[0].chars().nth(1).unwrap()),
             sort_order.find(x[0].chars().nth(2).unwrap()),
             sort_order.find(x[0].chars().nth(3).unwrap()),
-            sort_order.find(x[0].chars().nth(4).unwrap())
+            sort_order.find(x[0].chars().nth(4).unwrap()),
         )
-    );
+    });
 
-    two_pair.sort_by_key(|x| 
+    two_pair.sort_by_key(|x| {
         (
-            sort_order.find(x[0].chars().nth(0).unwrap()),
+            sort_order.find(x[0].chars().next().unwrap()),
             sort_order.find(x[0].chars().nth(1).unwrap()),
             sort_order.find(x[0].chars().nth(2).unwrap()),
             sort_order.find(x[0].chars().nth(3).unwrap()),
-            sort_order.find(x[0].chars().nth(4).unwrap())
+            sort_order.find(x[0].chars().nth(4).unwrap()),
         )
-    );
+    });
 
-    one_pair.sort_by_key(|x| 
+    one_pair.sort_by_key(|x| {
         (
-            sort_order.find(x[0].chars().nth(0).unwrap()),
+            sort_order.find(x[0].chars().next().unwrap()),
             sort_order.find(x[0].chars().nth(1).unwrap()),
             sort_order.find(x[0].chars().nth(2).unwrap()),
             sort_order.find(x[0].chars().nth(3).unwrap()),
-            sort_order.find(x[0].chars().nth(4).unwrap())
+            sort_order.find(x[0].chars().nth(4).unwrap()),
         )
-    );
+    });
 
-    high_card.sort_by_key(|x| 
+    high_card.sort_by_key(|x| {
         (
-            sort_order.find(x[0].chars().nth(0).unwrap()),
+            sort_order.find(x[0].chars().next().unwrap()),
             sort_order.find(x[0].chars().nth(1).unwrap()),
             sort_order.find(x[0].chars().nth(2).unwrap()),
             sort_order.find(x[0].chars().nth(3).unwrap()),
-            sort_order.find(x[0].chars().nth(4).unwrap())
+            sort_order.find(x[0].chars().nth(4).unwrap()),
         )
-    );
+    });
 
     let mut result: i64 = 0;
     let mut rank: i64 = 1;
-    for hand in high_card{
+    for hand in high_card {
         result += rank * hand[1].parse::<i64>().unwrap();
         rank += 1;
     }
-    for hand in one_pair{
+    for hand in one_pair {
         result += rank * hand[1].parse::<i64>().unwrap();
         rank += 1;
     }
-    for hand in two_pair{
+    for hand in two_pair {
         result += rank * hand[1].parse::<i64>().unwrap();
         rank += 1;
     }
-    for hand in three_of_a_kind{
+    for hand in three_of_a_kind {
         result += rank * hand[1].parse::<i64>().unwrap();
         rank += 1;
     }
-    for hand in full_house{
+    for hand in full_house {
         result += rank * hand[1].parse::<i64>().unwrap();
         rank += 1;
     }
-    for hand in four_of_a_kind{
+    for hand in four_of_a_kind {
         result += rank * hand[1].parse::<i64>().unwrap();
         rank += 1;
     }
-    for hand in five_of_a_kind{
+    for hand in five_of_a_kind {
         result += rank * hand[1].parse::<i64>().unwrap();
         rank += 1;
     }
-    
 
     result
 }
@@ -157,8 +156,7 @@ mod tests {
     use super::*;
     #[test]
     fn it_works() {
-        let test_case = 
-"32T3K 765
+        let test_case = "32T3K 765
 T55J5 684
 KK677 28
 KTJJT 220
