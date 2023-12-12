@@ -9,6 +9,35 @@ fn main() {
     dbg!(output);
 }
 
+fn get_neighbors(pipe: char) -> Vec<(isize, isize)> {
+    match pipe {
+        '|' => vec![(-1, 0), (1, 0)],
+        '-' => vec![(0, -1), (0, 1)],
+        'L' => vec![(-1, 0), (0, 1)],
+        'J' => vec![(-1, 0), (0, -1)],
+        '7' => vec![(0, -1), (1, 0)],
+        'F' => vec![(1, 0), (0, 1)],
+        '.' => vec![],
+        _ => panic!("wrong pipe {}", pipe),
+    }
+}
+
+fn get_valid_neighbors(grid: &Vec<Vec<char>>, r: usize, c: usize) -> Vec<(usize, usize)> {
+    let rows: usize = grid.len();
+    let cols: usize = grid[0].len();
+
+    let neighbors = get_neighbors(grid[r][c]);
+    let mut vec: Vec<(usize, usize)> = Vec::new();
+    for (dr, dc) in neighbors {
+        let nr = r as isize + dr;
+        let nc = c as isize + dc;
+        if nr >= 0 && nr < rows as isize && nc >= 0 && nc < cols as isize {
+            vec.push((nr as usize, nc as usize));
+        }
+    }
+    vec
+}
+
 fn part2(input: &str) -> usize {
     let mut grid: Vec<Vec<char>> = input
         .split('\n')
@@ -21,45 +50,24 @@ fn part2(input: &str) -> usize {
     let s_col = s_index % (cols + 1);
 
     //assume no boarder case
-    if grid[s_row + 1][s_col] == 'L'
-        || grid[s_row + 1][s_col] == 'J'
-        || grid[s_row + 1][s_col] == '|'
+    let up_neighbors = get_valid_neighbors(&grid, s_row - 1, s_col);
+    let down_neighbors = get_valid_neighbors(&grid, s_row + 1, s_col);
+    let left_neighbors = get_valid_neighbors(&grid, s_row, s_col - 1);
+    let right_neighbors = get_valid_neighbors(&grid, s_row, s_col + 1);
+
+    if up_neighbors.contains(&(s_row, s_col)) && down_neighbors.contains(&(s_row, s_col)) {
+        grid[s_row][s_col] = '|';
+    } else if up_neighbors.contains(&(s_row, s_col)) && right_neighbors.contains(&(s_row, s_col)) {
+        grid[s_row][s_col] = 'L';
+    } else if up_neighbors.contains(&(s_row, s_col)) && left_neighbors.contains(&(s_row, s_col)) {
+        grid[s_row][s_col] = 'J';
+    } else if down_neighbors.contains(&(s_row, s_col)) && right_neighbors.contains(&(s_row, s_col))
     {
-        if grid[s_row][s_col + 1] == 'J'
-            || grid[s_row][s_col + 1] == '7'
-            || grid[s_row + 1][s_col] == '-'
-        {
-            grid[s_row][s_col] = 'F';
-        }
-        if grid[s_row][s_col - 1] == 'F'
-            || grid[s_row][s_col - 1] == 'L'
-            || grid[s_row + 1][s_col] == '-'
-        {
-            grid[s_row][s_col] = '7';
-        }
-        if grid[s_row - 1][s_col] == 'F'
-            || grid[s_row - 1][s_col] == '|'
-            || grid[s_row - 1][s_col] == '7'
-        {
-            grid[s_row][s_col] = '|';
-        }
-    } else if grid[s_row - 1][s_col] == 'F'
-        || grid[s_row - 1][s_col] == '|'
-        || grid[s_row - 1][s_col] == '7'
+        grid[s_row][s_col] = 'F';
+    } else if down_neighbors.contains(&(s_row, s_col)) && left_neighbors.contains(&(s_row, s_col)) {
+        grid[s_row][s_col] = '7';
+    } else if left_neighbors.contains(&(s_row, s_col)) && right_neighbors.contains(&(s_row, s_col))
     {
-        if grid[s_row][s_col + 1] == 'J'
-            || grid[s_row][s_col + 1] == '7'
-            || grid[s_row + 1][s_col] == '-'
-        {
-            grid[s_row][s_col] = 'L';
-        }
-        if grid[s_row][s_col - 1] == 'F'
-            || grid[s_row][s_col - 1] == 'L'
-            || grid[s_row + 1][s_col] == '-'
-        {
-            grid[s_row][s_col] = 'J';
-        }
-    } else {
         grid[s_row][s_col] = '-';
     }
 
@@ -76,70 +84,12 @@ fn part2(input: &str) -> usize {
         }
         steps = cmp::max(steps, step);
         visited.insert((row, col));
-        if grid[row][col] == 'S' {
-            if row > 0 {
-                deque.push_back((step + 1, row - 1, col));
-            }
-            if row < rows - 1 {
-                deque.push_back((step + 1, row + 1, col));
-            }
-            if col > 0 {
-                deque.push_back((step + 1, row, col - 1));
-            }
-            if col < cols - 1 {
-                deque.push_back((step + 1, row, col + 1));
-            }
-        }
-        if grid[row][col] == '|' {
-            if row > 0 {
-                deque.push_back((step + 1, row - 1, col));
-            }
-            if row < rows - 1 {
-                deque.push_back((step + 1, row + 1, col));
-            }
-        }
-        if grid[row][col] == '-' {
-            //6831
-            if col > 0 {
-                deque.push_back((step + 1, row, col - 1));
-            }
-            if col < cols - 1 {
-                deque.push_back((step + 1, row, col + 1));
-            }
-        }
-        if grid[row][col] == 'L' {
-            if row > 0 {
-                deque.push_back((step + 1, row - 1, col));
-            }
-            if col < cols - 1 {
-                deque.push_back((step + 1, row, col + 1));
-            }
-        }
-        if grid[row][col] == 'J' {
-            if row > 0 {
-                deque.push_back((step + 1, row - 1, col));
-            }
-            if col > 0 {
-                deque.push_back((step + 1, row, col - 1));
-            }
-        }
-        if grid[row][col] == '7' {
-            if row < rows - 1 {
-                deque.push_back((step + 1, row + 1, col));
-            }
-            if col > 0 {
-                deque.push_back((step + 1, row, col - 1));
-            }
-        }
-        if grid[row][col] == 'F' {
-            if row < rows - 1 {
-                deque.push_back((step + 1, row + 1, col));
-            }
-            if col < cols - 1 {
-                deque.push_back((step + 1, row, col + 1));
-            }
+        let neighbors = get_valid_neighbors(&grid, row, col);
+        for (row, col) in neighbors {
+            deque.push_back((step + 1, row, col));
         }
     }
+
     let mut count: usize = 0;
     for (r, row) in grid.iter().enumerate().take(rows) {
         let mut is_inside: bool = false;
