@@ -108,7 +108,7 @@ mod tests {
         let result = part1(test_case);
         assert_eq!(result, 10);
     }
-    //#[test]
+    #[test]
     fn it_works_all() {
         let test_case = "???.### 1,1,3
 .??..??...?##. 1,1,3
