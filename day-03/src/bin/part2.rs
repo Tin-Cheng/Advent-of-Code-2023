@@ -19,44 +19,6 @@ fn part2(input: &str) -> u32 {
 
     let mut hash_map: HashMap<String, Vec<u32>> = HashMap::new();
 
-    fn is_near_symbol(
-        data: &[Vec<char>],
-        rows: usize,
-        cols: usize,
-        row: usize,
-        col: usize,
-        length: usize,
-    ) -> bool {
-        let min_col = if col > 0 { col - 1 } else { 0 };
-        let max_col = if col + length < cols {
-            col + length + 1
-        } else {
-            cols
-        };
-
-        if !data[row][min_col].is_ascii_digit() && data[row][min_col] != '.' {
-            return true;
-        }
-        if !data[row][max_col - 1].is_ascii_digit() && data[row][max_col - 1] != '.' {
-            return true;
-        }
-        if row > 0 {
-            for c in min_col..max_col {
-                if !data[row - 1][c].is_ascii_digit() && data[row - 1][c] != '.' {
-                    return true;
-                }
-            }
-        }
-        if row + 1 < rows {
-            for c in min_col..max_col {
-                if !data[row + 1][c].is_ascii_digit() && data[row + 1][c] != '.' {
-                    return true;
-                }
-            }
-        }
-        false
-    }
-
     fn check_nearby_gears(
         data: &[Vec<char>],
         rows: usize,
