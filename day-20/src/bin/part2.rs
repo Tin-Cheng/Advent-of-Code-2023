@@ -143,8 +143,3 @@ fn part2(input: &str) -> isize {
     }
     lcm(answer_vec)
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-}
